@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
-#install nginx web server
+# install nginx web server to listen on port 80
 
-sudo apt-get update -y
-sudo apt-get install nginx -y
-echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html
-sudo service nginx start
+sudo apt-get update
+sudo apt-get -y install nginx
+# Listen on port 80
+sudo ufw allow 'Nginx HTTP'
+# create page with the string Holberton School and start nginx
+sudo echo "Hello World!" > /var/www/html/index.html
+sudo service nginx start 

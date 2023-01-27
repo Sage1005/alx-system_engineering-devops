@@ -1,18 +1,24 @@
 #!/usr/bin/python3
-""" Python CVS """
+""" for a given employee ID, returns
+    information about his/her TODO list progress
+"""
 
-import csv
+
 import requests
 from sys import argv
 
-if __name__ == '__main__':
-    user_id = argv[1]
-    url_todos = "https://jsonplaceholder.typicode.com/todos?userId={}"
-    api_todos = requests.get(url_todos.format(user_id), verify=False).json()
-    url_names = "https://jsonplaceholder.typicode.com/users/{}"
-    name_users = requests.get(url_names.format(user_id), verify=False).json()
-    with open("{}.csv".format(user_id), 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
-        for task in api_todos:
-            writer.writerow([int(user_id), name_users.get('username'),
-                            task.get('completed'), task.get('title')])
+if __name__ == "__main__":
+    emp_id = argv[1]
+    tasks_count = 0
+
+    r_td = requests.get('https://jsonplaceholder.typicode.com/todos?userId=' +
+                        emp_id)
+    r_usr = requests.get('https://jsonplaceholder.typicode.com/users/' +
+                         emp_id)
+
+    for tasks in r_td.json():
+        f = open(str(r_usr.json().get("id")) + ".csv", "a")
+        f.write("\"{}\",\"{}\",\"{}\",\"{}\"\n".format(
+                r_usr.json().get("id"), r_usr.json().get("username"),
+                tasks.get("completed"), tasks.get("title")))
+        f.close()

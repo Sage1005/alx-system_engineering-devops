@@ -1,6 +1,20 @@
-# Using Puppet
-
-exec { 'Install nginx':
-  command  => 'sudo apt-get -y update && sudo apt-get -y install nginx && echo "Hello World!" >> /var/www/html/index.html && sudo sed -i "60 i\ \tadd_header X-Served-By $HOSTNAME;" /etc/nginx/nginx.conf && sudo service nginx restart',
-  provider => 'shell',
+# Creating a custom HTTP header response with Puppet
+exec { 'update':
+  command => 'sudo apt-get update -y',
+  path    => ['/usr/bin', '/bin'],
+}
+package { 'nginx':
+  ensure  => installed,
+  require => Exec['update']
+}
+file_line { 'apply_config':
+  ensure  => 'present',
+  path    => '/etc/nginx/sites-available/default',
+  after   => 'server_name _;',
+  line    => 'add_header X-Served-By "$HOSTNAME";',
+  require => Package['nginx'],
+}
+service { 'nginx':
+  ensure  => running,
+  require => Package['nginx'],
 }

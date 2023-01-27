@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-#print to infinity and beyond and i am invicible when killed
-trap "echo I am invincible!!!" SIGTERM
-while true; do
-	echo "To infinity and beyond"
+# This script prints To infinity and beyond indefinitely.
+i=0
+while [ $i -eq 0 ]
+do
+	echo To infinity and beyond
 	sleep 2
+	trap 'echo "I am invincible!!!"' SIGTERM
 done

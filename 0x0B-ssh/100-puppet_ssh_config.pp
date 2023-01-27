@@ -1,12 +1,14 @@
-#!/usr/bin/env bash
-# Client configuration file (w/ Puppet)
-
+# change to no the password authentication
 file_line { 'Turn off passwd auth':
-  line => ' PasswordAuthentication no',
-  path => '/etc/ssh/ssh_config'
+    ensure => present,
+    path   => '/etc/ssh/ssh_config',
+    line   => '#   PasswordAuthentication no',
+    match  => '#   PasswordAuthentication yes'
 }
 
 file_line { 'Declare identity file':
-  line => ' IdentityFile ~/.ssh/school',
-  path => '/etc/ssh/ssh_config'
+    ensure => present,
+    path   => '/etc/ssh/ssh_config',
+    line   => '#   IdentityFile ~/.ssh/school',
+    match  => '#   IdentityFile ~/.ssh/id_rsa'
 }

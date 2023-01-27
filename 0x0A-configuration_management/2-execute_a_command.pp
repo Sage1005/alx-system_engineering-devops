@@ -1,6 +1,4 @@
-# Kill with Puppet
-exec { 'pkill':
-  command => 'pkill -f killmenow',
-  path    => '/usr/bin/',
-  returns => [0,1],
+# Executes pkill command
+exec { 'pkill -x killmenow':
+  path  => '/usr/bin:/usr/sbin:/bin'
 }
